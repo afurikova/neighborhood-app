@@ -85,7 +85,13 @@ $( document ).ready(function () {
                 bounds.extend(marker.position);
             })
             // adjust the map
-            map.fitBounds(bounds);            
+            map.fitBounds(bounds);
+            // keep the center when rezing the map
+            google.maps.event.addDomListener(window, 'resize', function() {
+                var center = map.getCenter();
+                google.maps.event.trigger(map, "resize");
+                map.setCenter(center);
+            });            
         }
     };
 
