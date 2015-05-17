@@ -59,6 +59,7 @@ $( document ).ready(function () {
             var myLatLng = new google.maps.LatLng(50.0833, 14.4167);
             // define initial markers variables
             var places = locationUnwrapped.places;
+            var bounds = new google.maps.LatLngBounds();
             var markers = []
 
             // define map options 
@@ -80,7 +81,11 @@ $( document ).ready(function () {
                     map: map,
                     title: place.title
                 });
-            })   
+                // and extend the boundaries of the map according to the each added marker
+                bounds.extend(marker.position);
+            })
+            // adjust the map
+            map.fitBounds(bounds);            
         }
     };
 
