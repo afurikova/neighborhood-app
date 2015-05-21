@@ -24,13 +24,15 @@
 
 	<div class="container" data-bind="visible: currentLocation">
 		<div id="side_bar" data-bind="loadMarkers: map">
-			My Favorite locations
+			<h2>My Favorite locations</h2>
 			<div data-bind="foreach: markers">
-				<article>
-				<a href="#" data-bind="click: $data.openInfo"><h3 data-bind="text: $data.title"></h3></a>
-				<p data-bind="text: $data.address"></p>
-				<p data-bind="text: $data.content"></p>
-			</article>
+				<div class="article">
+					<a href="#" data-bind="click: $data.openInfo"><h3 data-bind="text: $data.title"></h3></a>
+					<div class="hidden content">
+						<p data-bind="text: $data.address"></p>
+						<p data-bind="text: $data.content"></p>
+					</div>
+				</div>
 			</div>
 
 		</div>

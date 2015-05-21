@@ -83,6 +83,9 @@ $( document ).ready(function () {
             // console.log(places)
             var infoWindow = new google.maps.InfoWindow; //static infoWindow for all your markers
             
+            // the last selected article
+            var previousArticle;
+
             // add markers of current place and display them
             places.forEach(function (place) {
                 // define markers position and create an object
@@ -104,15 +107,25 @@ $( document ).ready(function () {
                         // infoWindow.close();
                         infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
                         infoWindow.open(map, this);
+
+                        // show the info of the actual selected place
+                        var index = $.inArray(marker, markers)
+                        var selectedArticle = $(".article:eq(" + index + ") .content")
+                        selectedArticle.toggle();
+                        
+                        // hide the previously selected article if any
+                        if(previousArticle) {
+                            previousArticle.toggle()
+                        };
+                        // set the selected article as the previous one
+                        previousArticle = selectedArticle;
                     }
                 });
 
                 // display the info window upon click on the marker
-                console.log(marker)
                 google.maps.event.addListener(marker, 'click', function() {
-                    console.log(marker.title)
-                    infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
-                    infoWindow.open(map, marker);
+                    // console.log(marker.title)
+                    this.openInfo();
                 });
                     // add each marker to the list
                 markers.push(marker);
@@ -144,10 +157,9 @@ $( document ).ready(function () {
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
 
-        self.openInfo = function () {
-            // open the info window of a marker when an item of the list is clicked
-            this.openInfo()
-        }
+        // self.openInfo = function () {
+        //     console.log("click")
+        // }
     }
         
     ko.applyBindings(new AppViewModel());
