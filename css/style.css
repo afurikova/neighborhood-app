@@ -1,15 +1,20 @@
-/*Note that some CSS that works within quirks mode is not valid 
-in standards mode. In specific, all percentage-based sizes must 
-inherit from parent block elements, and if any of those ancestors 
-fail to specify a size, they are assumed to be sized at 0 x 0 pixels. 
-For that reason, we include the following <style> declaration:*/
-
 html { 
 	height: 100% 
 }
 body { 
 	height: 100%; margin: 0; padding: 0 
 }
+.container {
+	height: 100%;
+	width: 100%;
+}
 #map-canvas { 
-	height: 100% 
+	height: 100%;
+	width: 100%;
+	padding: 0;
+}
+.placesList {
+	border: solid;
+	width: 30%;
+	margin-top: 10px;
 }

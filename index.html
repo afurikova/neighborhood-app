@@ -11,12 +11,40 @@
 
 </head>
 <body>
-	<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
+	<!-- <div data-bind="visible: currentPlaces().length > 0">
+		<h2><spand>My favourite places in </spand><span data-bind="text: currentLocation().city"></span></h2>
+		<div data-bind="foreach: currentPlaces">
+			<article>
+				<a href='#' data-bind="click: $root.openInfo"><h3 data-bind="text: $data.title"></h3></a>
+				<p data-bind="text: $data.address"></p>
+			</article>
+		</div>
+	</div> -->
+
+
+	<div class="container" data-bind="visible: currentLocation">
+		<div id="side_bar" data-bind="loadMarkers: map">
+			My Favorite locations
+			<div data-bind="foreach: markers">
+				<article>
+				<a href="#" data-bind="click: $data.openInfo"><h3 data-bind="text: $data.title"></h3></a>
+				<p data-bind="text: $data.address"></p>
+				<p data-bind="text: $data.content"></p>
+			</article>
+			</div>
+
+		</div>
+		<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
+	</div>
+
+
+	
 	
 <script src="js/script.js"></script>
 <script type='text/javascript' src='js/knockout-3.1.0.js'></script>
 <link rel="stylesheet" href="css/style.css" type="text/css">
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script> -->
 <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script> -->
 </body>
 </html>
