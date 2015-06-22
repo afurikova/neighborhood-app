@@ -18,3 +18,14 @@ body {
 	width: 30%;
 	margin-top: 10px;
 }
+.hidden {
+	display: none;
+}
+.side_bar {
+    width: 25%;
+    background-color: #DDABA0;
+    position: absolute;
+    top: 2%;
+    left: 1%;
+    padding: 2%;
+}

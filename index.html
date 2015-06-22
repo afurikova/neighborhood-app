@@ -20,23 +20,23 @@
 			</article>
 		</div>
 	</div> -->
+	<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
 
-
-	<div class="container" data-bind="visible: currentLocation">
-		<div id="side_bar" data-bind="loadMarkers: map">
+	<div class="side_bar" data-bind="visible: currentLocation">
+		<div data-bind="loadMarkers: map">
 			<h2>My Favorite locations</h2>
-			<div data-bind="foreach: markers">
-				<div class="article">
-					<a href="#" data-bind="click: $data.openInfo"><h3 data-bind="text: $data.title"></h3></a>
+			<ul data-bind="foreach: markers">
+				<li class="article">
+					<a href="#" data-bind="click: $data.openInfo"><span data-bind="text: $data.title"></span></a>
 					<div class="hidden content">
 						<p data-bind="text: $data.address"></p>
 						<p data-bind="text: $data.content"></p>
 					</div>
-				</div>
-			</div>
+				</li>
+			</ul>
 
 		</div>
-		<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
+		
 	</div>
 
 
