@@ -11,9 +11,9 @@ $( document ).ready(function () {
             "lng" : 14.4167,
             "favourite_places": [
             {
-                "title": "Krav Maga Academy",
+                "title": "KMG Krav Maga Academy",
                 "address": "Na Pankráci 32, Praha 4, 147 00",
-                "description": "ipsum blba blaballbab",
+                "description": "One of the several KMG training places in Prague where I used to do my trainings. Awesome pepople and awesome trainers.",
                 "url": "http://www.krav-maga.cz/",
                 "category": "sport",
                 "lat" : 50.0833,
@@ -58,8 +58,8 @@ $( document ).ready(function () {
             // define initial map variables
             var myLatLng = new google.maps.LatLng(50.0833, 14.4167);
             // define initial markers variables
-            var places = locationUnwrapped.places;
-            var markers = []
+            // var places = locationUnwrapped.places;
+            // var markers = []
 
             // define map options 
             var mapOptions = {
@@ -71,7 +71,7 @@ $( document ).ready(function () {
         }
     };
 
-    // define a ha
+    // define a handler for displaying the markers
     ko.bindingHandlers.loadMarkers = {
         update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             console.log("load markers");
@@ -81,7 +81,11 @@ $( document ).ready(function () {
             var places = viewModel.currentLocation().places;
             var markers = [];
             // console.log(places)
-            var infoWindow = new google.maps.InfoWindow; //static infoWindow for all your markers
+
+            var infoWindow = new google.maps.InfoWindow({
+                maxWidth: 200
+            }); //static infoWindow for all the markers, 
+            // it makes sure only one ifowindow is open at the moment
             
             // the last selected article
             var previousArticle;
@@ -101,6 +105,8 @@ $( document ).ready(function () {
                     title: place.title,
                     address: place.address,
                     content: place.description,
+                    // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
+                    imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
                     // function opening an info window, use this function to manipulate the side-bar
                     openInfo: function () {
@@ -121,7 +127,7 @@ $( document ).ready(function () {
                         previousArticle = selectedArticle;
                     }
                 });
-
+                
                 // display the info window upon click on the marker
                 google.maps.event.addListener(marker, 'click', function() {
                     // console.log(marker.title)
@@ -146,7 +152,6 @@ $( document ).ready(function () {
             }
             viewModel.markers(markers)
             // console.log(viewModel.markers())
-
         }
     }
 
@@ -156,10 +161,6 @@ $( document ).ready(function () {
         self.map = ko.observable();
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
-
-        // self.openInfo = function () {
-        //     console.log("click")
-        // }
     }
         
     ko.applyBindings(new AppViewModel());
