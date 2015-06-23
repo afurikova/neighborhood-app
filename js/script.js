@@ -87,8 +87,10 @@ $( document ).ready(function () {
             }); //static infoWindow for all the markers, 
             // it makes sure only one ifowindow is open at the moment
             
-            // the last selected article
+            // initialize a variable for the last selected article
             var previousArticle;
+            // initialize a variable for the last animated marker
+            var previousAnimation;
 
             // add markers of current place and display them
             places.forEach(function (place) {
@@ -110,9 +112,23 @@ $( document ).ready(function () {
 
                     // function opening an info window, use this function to manipulate the side-bar
                     openInfo: function () {
-                        // infoWindow.close();
-                        infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
-                        infoWindow.open(map, this);
+                        // open an info window
+                        // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
+                        // infoWindow.open(map, this);
+
+                        // create an animation of the marker
+                        if (this.getAnimation() != null) {
+                            this.setAnimation(null);
+                        } else {
+                            this.setAnimation(google.maps.Animation.BOUNCE);
+                        }
+                        // and close the previous animation if any
+                        if(previousAnimation) {
+                            previousAnimation.setAnimation(null);
+                        };
+                        // set the selected article as the previous one
+                        previousAnimation = this;
+
 
                         // show the info of the actual selected place
                         var index = $.inArray(marker, markers)
