@@ -12,7 +12,7 @@ $( document ).ready(function () {
             "favourite_places": [
             {
                 "title": "KMG Krav Maga Academy",
-                "address": "Na Pankráci 32, Praha 4, 147 00",
+                "address": "Na Pankraci 32, Praha 4, 147 00",
                 "description": "One of the several KMG training places in Prague where I used to do my trainings. Awesome pepople and awesome trainers.",
                 "url": "http://www.krav-maga.cz/",
                 "category": "sport",
@@ -20,9 +20,9 @@ $( document ).ready(function () {
                 "lng" : 14.4167
             },
             {
-                "title": "Plavecký stadion Podolí",
+                "title": "Swimming Pool Podoli",
                 "address": "Podolská 74, 147 50 Praha 4",
-                "description": "swimming pool",
+                "description": "Don't know what to do during the sunny days? Go to Podoli. Beside a huge indoor and two outdoor swimming pools you can find there a water slide, pools for kids fitness and several fast-foods. One of the oudtood swimming pool is warmed up in any season so you can enjoy outdoor swimming also during the winter.",
                 "url": "http://www.pspodoli.cz/",
                 "category": "sport",
                 "lat" : 50.051762,
@@ -30,8 +30,8 @@ $( document ).ready(function () {
             },
             {
                 "title": "Hybernia",
-                "address": "Hybernská 7/1033, Praha 1, 110 00",
-                "description": "One of the best restaurant in Prague",
+                "address": "Hybernska 7/1033, Praha 1, 110 00",
+                "description": "Czech cuisine is said to be heavy and unhealthy. But not in this restaurant where you can get some of delicious czech specialities for reasonable prices. And in addition to that you can also draw beer directly from the table. ",
                 "url": "http://www.hybernia.cz/",
                 "category": "restaurant",
                 "lat" : 50.087502,
@@ -57,9 +57,6 @@ $( document ).ready(function () {
             var locationUnwrapped = ko.unwrap(location);
             // define initial map variables
             var myLatLng = new google.maps.LatLng(50.0833, 14.4167);
-            // define initial markers variables
-            // var places = locationUnwrapped.places;
-            // var markers = []
 
             // define map options 
             var mapOptions = {
@@ -99,8 +96,6 @@ $( document ).ready(function () {
                 var lng = place.lng;
                 var placeLatLng = new google.maps.LatLng(lat, lng);
                 
-                // infoWindow.setContent(place.description)
-
                 var marker = new google.maps.Marker({
                     position: placeLatLng,
                     map: map,
@@ -110,7 +105,8 @@ $( document ).ready(function () {
                     // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
                     imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
-                    // function opening an info window, use this function to manipulate the side-bar
+                    // a function opening an info window, use this function to manipulate 
+                    // the side-bar and the markers at the same time
                     openInfo: function () {
                         // open an info window
                         // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
@@ -178,7 +174,8 @@ $( document ).ready(function () {
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
     }
-        
+    
+    // apply the bindings
     ko.applyBindings(new AppViewModel());
     
  });
