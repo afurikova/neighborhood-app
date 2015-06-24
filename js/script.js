@@ -24,7 +24,7 @@ $( document ).ready(function () {
                 "address": "Podolská 74, 147 50 Praha 4",
                 "description": "Don't know what to do during the sunny days? Go to Podoli. Beside a huge indoor and two outdoor swimming pools you can find there a water slide, pools for kids fitness and several fast-foods. One of the oudtood swimming pool is warmed up in any season so you can enjoy outdoor swimming also during the winter.",
                 "url": "http://www.pspodoli.cz/",
-                "category": "sport",
+                "category": "swimming",
                 "lat" : 50.051762,
                 "lng" : 14.416978
             },
@@ -48,6 +48,11 @@ $( document ).ready(function () {
         this.places = data.favourite_places;
     };
 
+    var setIconImage = function (category) {
+        // console.log(category)
+        return "images/" + category + ".png";
+    }
+
     // define a handler to manage the map loading
     ko.bindingHandlers.loadMap = {
         update: function(element, valueAccessor, allBindings, viewModel) {
@@ -65,6 +70,7 @@ $( document ).ready(function () {
             }
             // display the updated map attached to the current element
             viewModel.map(new google.maps.Map(element, mapOptions));
+
         }
     };
 
@@ -88,6 +94,9 @@ $( document ).ready(function () {
             var previousArticle;
             // initialize a variable for the last animated marker
             var previousAnimation;
+            // image for the marker
+            // var iconImage = 'images/restaurant.png';
+
 
             // add markers of current place and display them
             places.forEach(function (place) {
@@ -99,6 +108,7 @@ $( document ).ready(function () {
                 var marker = new google.maps.Marker({
                     position: placeLatLng,
                     map: map,
+                    icon: setIconImage(place.category),
                     title: place.title,
                     address: place.address,
                     content: place.description,

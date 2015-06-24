@@ -22,7 +22,7 @@
 	</div> -->
 	<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
 
-	<div class="side_bar" data-bind="visible: currentLocation">
+	<nav role="navigation" class="side_bar" data-bind="visible: currentLocation">
 		<div data-bind="loadMarkers: map">
 			<h2>My Favorite locations</h2>
 			<ul data-bind="foreach: markers">
@@ -38,7 +38,7 @@
 
 		</div>
 		
-	</div>
+	</nav>
 
 
 	
