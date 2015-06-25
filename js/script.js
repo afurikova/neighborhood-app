@@ -53,6 +53,10 @@ $( document ).ready(function () {
         return "images/" + category + ".png";
     }
 
+    var createItem = function () {
+
+    }
+
     // define a handler to manage the map loading
     ko.bindingHandlers.loadMap = {
         update: function(element, valueAccessor, allBindings, viewModel) {
@@ -97,6 +101,8 @@ $( document ).ready(function () {
             // image for the marker
             // var iconImage = 'images/restaurant.png';
 
+            var index = 0;
+
 
             // add markers of current place and display them
             places.forEach(function (place) {
@@ -112,6 +118,7 @@ $( document ).ready(function () {
                     title: place.title,
                     address: place.address,
                     content: place.description,
+                    link: place.url,
                     // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
                     imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
@@ -122,43 +129,50 @@ $( document ).ready(function () {
                         // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
                         // infoWindow.open(map, this);
 
-                        // create an animation of the marker
+                        // create an animation of the marker, only one or any
+                        // marker animation can be active at the moment
+
+                        // activate the animation if not activated and asign the
+                        // the current animation as the previous one
                         if (this.getAnimation() != null) {
                             this.setAnimation(null);
+                            previousAnimation = this;
+                        // or if the animation is not activated, check for the previous
+                        // animation, switch it off if needed and activate the current animation,
+                        // finaly asign the new activation to the previous one 
                         } else {
-                            this.setAnimation(google.maps.Animation.BOUNCE);
-                        }
-                        // and close the previous animation if any
-                        if(previousAnimation) {
-                            previousAnimation.setAnimation(null);
-                        };
-                        // set the selected article as the previous one
-                        previousAnimation = this;
+                            if ((previousAnimation) && (previousAnimation.getAnimation() != null)) {
+                                previousAnimation.setAnimation(null);                   
+                            }
 
+                            this.setAnimation(google.maps.Animation.BOUNCE);
+                            previousAnimation = this;
+                        }
 
                         // show the info of the actual selected place
                         var index = $.inArray(marker, markers)
-                        var selectedArticle = $(".article:eq(" + index + ") .content")
-                        selectedArticle.toggle();
+                        var selectedArticleContent = $(".article:eq(" + index + ") .content")
+                        selectedArticleContent.toggle();
                         
                         // hide the previously selected article if any
                         if(previousArticle) {
                             previousArticle.toggle()
                         };
                         // set the selected article as the previous one
-                        previousArticle = selectedArticle;
+                        previousArticle = selectedArticleContent;
                     }
                 });
                 
-                // display the info window upon click on the marker
+                // trigger an event when click on a marker
                 google.maps.event.addListener(marker, 'click', function() {
-                    // console.log(marker.title)
                     this.openInfo();
                 });
-                    // add each marker to the list
+
+                // add each marker to the list
                 markers.push(marker);
                 // and extend the boundaries of the map according to the each added marker
                 bounds.extend(marker.position);
+                index = index + 1;
             })
             
             if (map) {
@@ -175,6 +189,7 @@ $( document ).ready(function () {
             viewModel.markers(markers)
             // console.log(viewModel.markers())
         }
+
     }
 
     var AppViewModel = function () {
@@ -183,6 +198,7 @@ $( document ).ready(function () {
         self.map = ko.observable();
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
+        // self.currentPlaces = ko.observableArray(self.currentLocation().places);
     }
     
     // apply the bindings
