@@ -41,6 +41,50 @@ $( document ).ready(function () {
         }
     ];
 
+    // Create an array of styles.
+    var styles = [
+    {
+        "featureType": "administrative.locality",
+        "elementType": "geometry",
+        "stylers": [
+        { "visibility": "on" },
+        { "hue": "#0099ff" },
+        { "saturation": 30 }
+        ]
+    },
+    {
+    "stylers": [
+      { "weight": 3 },
+      { "visibility": "simplified" },
+      { "saturation": -46 },
+      { "gamma": 0.41 },
+      { "hue": "#0077ff" }
+    ]}];
+
+// Create an array of styles.
+  // var styles = [
+  //   {
+  //     stylers: [
+  //       { hue: "#00ffe6" },
+  //       { saturation: -20 }
+  //     ]
+  //   },{
+  //     featureType: "road",
+  //     elementType: "geometry",
+  //     stylers: [
+  //       { lightness: 100 },
+  //       { visibility: "simplified" }
+  //     ]
+  //   },{
+  //     featureType: "road",
+  //     elementType: "labels",
+  //     stylers: [
+  //       { visibility: "off" }
+  //     ]
+  //   }
+  // ];
+
+
     // constructor of location object
     var Location = function (data) {
         this.city = ko.observable(data.city);
@@ -59,22 +103,38 @@ $( document ).ready(function () {
 
     // define a handler to manage the map loading
     ko.bindingHandlers.loadMap = {
-        update: function(element, valueAccessor, allBindings, viewModel) {
+        update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
             console.log("map loading")
             // get the value of current Location and unwrap it (in case it is not an observable)
+            // var map = ko.unwrap(bindingContext.$data.map());
+            // var map2 = ko.unwrap(viewModel.map());
+            var map;
             var location = valueAccessor();
             var locationUnwrapped = ko.unwrap(location);
             // define initial map variables
             var myLatLng = new google.maps.LatLng(50.0833, 14.4167);
 
+            // Create a new StyledMapType object, passing it the array of styles,
+            // as well as the name to be displayed on the map type control.
+            var styledMap = new google.maps.StyledMapType(styles, {name: "Styled Map"});
+
             // define map options 
             var mapOptions = {
                 center: myLatLng,
-                zoom: 15
+                zoom: 15,
+                disableDefaultUI: true,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             }
             // display the updated map attached to the current element
-            viewModel.map(new google.maps.Map(element, mapOptions));
+            map = new google.maps.Map(element, mapOptions);
 
+            //Associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
+
+            // pass the map object to viewModel so it can be reached 
+            // when markers are created
+            (bindingContext.$data.map(map));
         }
     };
 
@@ -198,7 +258,6 @@ $( document ).ready(function () {
         self.map = ko.observable();
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
-        // self.currentPlaces = ko.observableArray(self.currentLocation().places);
     }
     
     // apply the bindings
