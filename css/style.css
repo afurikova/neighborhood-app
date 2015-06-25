@@ -22,10 +22,53 @@ body {
 	display: none;
 }
 .side_bar {
-    width: 25%;
-    background-color: #DDABA0;
-    position: absolute;
+	max-height: 70%;
+	position: absolute;
+	overflow-y: auto;
+    width: 27%;
+    min-width: 250px;
+    background-color: rgba(65, 59, 83, 0.7);
+    box-shadow: 5px 5px 5px #888;
+    color: white;
     top: 2%;
     left: 1%;
     padding: 2%;
 }
+
+.listElement {
+	color: #49B0FF;
+	text-shadow: 1px 1px rgba(18, 21, 24, 0.7);
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+a {
+	color: #FFF;
+}
+
+h2 {
+	color: #FFF;
+	text-shadow: 2px 2px #3C3845;
+}
+
+/*::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}*/
