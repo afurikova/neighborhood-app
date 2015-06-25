@@ -155,6 +155,7 @@ $( document ).ready(function () {
                     address: place.address,
                     content: place.description,
                     link: place.url,
+                    category: place.category,
                     // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
                     imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 

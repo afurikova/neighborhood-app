@@ -18,7 +18,7 @@
 			<h2>My Favorite locations in <span data-bind="text: currentLocation().city"></span></h2>
 			<ul data-bind="foreach: markers">
 				<li class="article">
-					<a href="#" data-bind="click: $data.openInfo"><span data-bind="text: $data.title"></span></a>
+					<a class="listElement" href="#" data-bind="click: $data.openInfo"><span data-bind="text: $data.title"></span>, </a> <span class="category" data-bind="text: $data.category"></span>
 					<div class="hidden content">
 						<p data-bind="text: $data.address"></p>
 						<p data-bind="text: $data.content"></p>
