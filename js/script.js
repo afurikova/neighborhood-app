@@ -49,7 +49,7 @@ $( document ).ready(function () {
         "stylers": [
         { "visibility": "on" },
         { "hue": "#0099ff" },
-        { "saturation": 30 }
+        { "saturation": 20 }
         ]
     },
     {
@@ -60,30 +60,6 @@ $( document ).ready(function () {
       { "gamma": 0.41 },
       { "hue": "#0077ff" }
     ]}];
-
-// Create an array of styles.
-  // var styles = [
-  //   {
-  //     stylers: [
-  //       { hue: "#00ffe6" },
-  //       { saturation: -20 }
-  //     ]
-  //   },{
-  //     featureType: "road",
-  //     elementType: "geometry",
-  //     stylers: [
-  //       { lightness: 100 },
-  //       { visibility: "simplified" }
-  //     ]
-  //   },{
-  //     featureType: "road",
-  //     elementType: "labels",
-  //     stylers: [
-  //       { visibility: "off" }
-  //     ]
-  //   }
-  // ];
-
 
     // constructor of location object
     var Location = function (data) {
