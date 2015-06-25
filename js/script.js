@@ -108,6 +108,13 @@ $( document ).ready(function () {
             map.mapTypes.set('map_style', styledMap);
             map.setMapTypeId('map_style');
 
+            // adjust the map when the window is beeing resized
+            google.maps.event.addDomListener(window, 'resize', function() {
+                var center = map.getCenter();
+                google.maps.event.trigger(map, "resize");
+                map.setCenter(center);
+            });
+
             // pass the map object to viewModel so it can be reached 
             // when markers are created
             (bindingContext.$data.map(map));
@@ -134,97 +141,99 @@ $( document ).ready(function () {
             var previousArticle;
             // initialize a variable for the last animated marker
             var previousAnimation;
-            // image for the marker
-            // var iconImage = 'images/restaurant.png';
 
-            var index = 0;
-
-
+            var address;
+            var geocoder = new google.maps.Geocoder();
+            
             // add markers of current place and display them
             places.forEach(function (place) {
                 // define markers position and create an object
                 var lat = place.lat;
                 var lng = place.lng;
                 var placeLatLng = new google.maps.LatLng(lat, lng);
-                
-                var marker = new google.maps.Marker({
-                    position: placeLatLng,
-                    map: map,
-                    icon: setIconImage(place.category),
-                    title: place.title,
-                    address: place.address,
-                    content: place.description,
-                    link: place.url,
-                    category: place.category,
-                    // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
-                    imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
-                    // a function opening an info window, use this function to manipulate 
-                    // the side-bar and the markers at the same time
-                    openInfo: function () {
-                        // open an info window
-                        // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
-                        // infoWindow.open(map, this);
+                address = place.address;
 
-                        // create an animation of the marker, only one or any
-                        // marker animation can be active at the moment
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var latitude = results[0].geometry.location.lat();
+                        var longitude = results[0].geometry.location.lng();
+                        createMarker (latitude, longitude);
+                    } 
+                }); 
+                // define a function that will create a marker, adjust the map according
+                // to the marker and add the marker to the list in viewModel
+                // the function shall be called after address is convert to
+                // latitude and longitude
+                function createMarker (lat, lng) {
+                    console.log("create marker")
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, lng),
+                        map: map,
+                        icon: setIconImage(place.category),
+                        title: place.title,
+                        address: place.address,
+                        content: place.description,
+                        link: place.url,
+                        category: place.category,
+                        // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
+                        imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
-                        // activate the animation if not activated and asign the
-                        // the current animation as the previous one
-                        if (this.getAnimation() != null) {
-                            this.setAnimation(null);
-                            previousAnimation = this;
-                        // or if the animation is not activated, check for the previous
-                        // animation, switch it off if needed and activate the current animation,
-                        // finaly asign the new activation to the previous one 
-                        } else {
-                            if ((previousAnimation) && (previousAnimation.getAnimation() != null)) {
-                                previousAnimation.setAnimation(null);                   
+                        // a function opening an info window, use this function to manipulate 
+                        // the side-bar and the markers at the same time
+                        openInfo: function () {
+                            // open an info window
+                            // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
+                            // infoWindow.open(map, this);
+
+                            // create an animation of the marker, only one or any
+                            // marker animation can be active at the moment
+
+                            // activate the animation if not activated and asign the
+                            // the current animation as the previous one
+                            if (this.getAnimation() != null) {
+                                this.setAnimation(null);
+                                previousAnimation = this;
+                            // or if the animation is not activated, check for the previous
+                            // animation, switch it off if needed and activate the current animation,
+                            // finaly asign the new activation to the previous one 
+                            } else {
+                                if ((previousAnimation) && (previousAnimation.getAnimation() != null)) {
+                                    previousAnimation.setAnimation(null);                   
+                                }
+
+                                this.setAnimation(google.maps.Animation.BOUNCE);
+                                previousAnimation = this;
                             }
 
-                            this.setAnimation(google.maps.Animation.BOUNCE);
-                            previousAnimation = this;
+                            // show the info of the actual selected place
+                            var index = $.inArray(marker, markers)
+                            var selectedArticleContent = $(".article:eq(" + index + ") .content")
+                            selectedArticleContent.toggle();
+                            
+                            // hide the previously selected article if any
+                            if(previousArticle) {
+                                previousArticle.toggle()
+                            };
+                            // set the selected article as the previous one
+                            previousArticle = selectedArticleContent;
                         }
+                    })
+                    // trigger an event when click on a marker
+                    google.maps.event.addListener(marker, 'click', function() {
+                        this.openInfo();
+                    });
 
-                        // show the info of the actual selected place
-                        var index = $.inArray(marker, markers)
-                        var selectedArticleContent = $(".article:eq(" + index + ") .content")
-                        selectedArticleContent.toggle();
-                        
-                        // hide the previously selected article if any
-                        if(previousArticle) {
-                            previousArticle.toggle()
-                        };
-                        // set the selected article as the previous one
-                        previousArticle = selectedArticleContent;
-                    }
-                });
-                
-                // trigger an event when click on a marker
-                google.maps.event.addListener(marker, 'click', function() {
-                    this.openInfo();
-                });
+                    // add the new marker to the list of markers in viewModel
+                    // so it can be used to build a sidebar list
+                    bindingContext.$data.markers.push(marker)
+                    markers.push(marker);
 
-                // add each marker to the list
-                markers.push(marker);
-                // and extend the boundaries of the map according to the each added marker
-                bounds.extend(marker.position);
-                index = index + 1;
+                    // adjust a map according to the added markers
+                    bounds.extend(marker.position);
+                    map.fitBounds(bounds)
+                }
             })
-            
-            if (map) {
-                // adjust the map according to the added markers
-                map.fitBounds(bounds)
-
-                // and when the window is being resi
-                google.maps.event.addDomListener(window, 'resize', function() {
-                    var center = map.getCenter();
-                    google.maps.event.trigger(map, "resize");
-                    map.setCenter(center);
-                });
-            }
-            viewModel.markers(markers)
-            // console.log(viewModel.markers())
         }
 
     }
