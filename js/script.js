@@ -128,7 +128,13 @@ $( document ).ready(function () {
             var map = ko.unwrap(valueAccessor());
             var bounds = new google.maps.LatLngBounds();
 
-            var places = viewModel.currentLocation().places;
+            // get all the favourite places in currentLocation and
+            // sort them alphabetically
+            var places = bindingContext.$data.currentLocation().places;
+            places.sort(function (place1, place2) {
+                return (place1.title > place2.title) ? 1 : -1;
+            });
+
             var markers = [];
             // console.log(places)
 
