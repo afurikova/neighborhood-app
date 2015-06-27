@@ -53,11 +53,11 @@ $( document ).ready(function () {
                 "category": "coffee"
             },
             {
-                "title": "Divoka Sarka",
-                "address": "Divoka Sarka 41, Praha 6, 164 00",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                "url": "http://koupaliste-sarka.webnode.cz/",
-                "category": "swimming"
+                "title": "Vagon",
+                "address": "Národní 961/25, Praha 1",
+                "description": "If you don't know where to go in the evening I would recommend this rock bar. This is a place popular among the Czech rokres and there is live music nearly every day.",
+                "url": "http://mujweb.cz/triffid/",
+                "category": "music_rock"
             },
             {
                 "title": "Riegrovy sady",
@@ -82,7 +82,7 @@ $( document ).ready(function () {
             },
             {
                 "title": "Golf Club Praha",
-                "address": "Plzenska 401/2, Praha 5",
+                "address": "Plzenska 401, Praha 5",
                 "description": "Nice, calm place to play golf with course of nine holes. However, the course is quite hilly. You can also watch the game directly from the terrace of the local, homely restaurant.",
                 "url": "http://www.gcp.cz/index.php?lang=en",
                 "category": "golf"
@@ -94,21 +94,12 @@ $( document ).ready(function () {
     // Create an array of styles.
     var styles = [
     {
-        "featureType": "administrative.locality",
-        "elementType": "geometry",
-        "stylers": [
-        { "visibility": "on" },
-        { "hue": "#0099ff" },
-        { "saturation": 20 }
-        ]
-    },
-    {
     "stylers": [
-      { "weight": 3 },
       { "visibility": "simplified" },
-      { "saturation": -46 },
-      { "gamma": 0.41 },
-      { "hue": "#0077ff" }
+      { "gamma": 0.71 },
+      { "saturation": 30 },
+      { "weight": 5.1 },
+      { "lightness": 22 }
     ]}];
 
     // constructor of location object
@@ -298,9 +289,6 @@ $( document ).ready(function () {
         self.map = ko.observable();
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
-        self.sortedMarkers = ko.computed(function () {
-            return
-        })
     }
     
     // apply the bindings

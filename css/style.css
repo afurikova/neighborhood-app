@@ -1,8 +1,9 @@
 html { 
-	height: 100% 
+	height: 100%;
+	font-family: 'Cabin', sans-serif;
 }
 body { 
-	height: 100%; margin: 0; padding: 0 
+	height: 100%; margin: 0; padding: 0;
 }
 .container {
 	height: 100%;
@@ -27,7 +28,7 @@ body {
 	overflow-y: auto;
     width: 27%;
     min-width: 250px;
-    background-color: rgba(65, 59, 83, 0.7);
+    background-color: rgba(13, 117, 165, 0.77);
     box-shadow: 5px 5px 5px #888;
     color: white;
     top: 2%;
@@ -36,9 +37,10 @@ body {
 }
 
 .listElement {
-	color: #49B0FF;
-	text-shadow: 1px 1px rgba(18, 21, 24, 0.7);
+	color: #FFFC20;
+	text-shadow: 1px 1px rgba(37, 59, 81, 0.7);
 	text-decoration: none;
+	font-weight: bold;
 }
 
 .category {
