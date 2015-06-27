@@ -12,30 +12,80 @@ $( document ).ready(function () {
             "favourite_places": [
             {
                 "title": "KMG Krav Maga Academy",
-                "address": "Na Pankraci 32, Praha 4, 147 00",
+                "address": "Na Pankraci 32, Praha 4",
                 "description": "One of the several KMG training places in Prague where I used to do my trainings. Awesome pepople and awesome trainers.",
                 "url": "http://www.krav-maga.cz/",
-                "category": "sport",
-                "lat" : 50.0833,
-                "lng" : 14.4167
+                "category": "krav maga"
             },
             {
                 "title": "Swimming Pool Podoli",
-                "address": "Podolská 74, 147 50 Praha 4",
+                "address": "Podolská 74, Praha 4",
                 "description": "Don't know what to do during the sunny days? Go to Podoli. Beside a huge indoor and two outdoor swimming pools you can find there a water slide, pools for kids fitness and several fast-foods. One of the oudtood swimming pool is warmed up in any season so you can enjoy outdoor swimming also during the winter.",
                 "url": "http://www.pspodoli.cz/",
-                "category": "swimming",
-                "lat" : 50.051762,
-                "lng" : 14.416978
+                "category": "swimming"
+            },
+            {
+                "title": "Aquapark Cestlice",
+                "address": "Prazska 138, Čestlice, Praha - vychod",
+                "description": " The biggest aqupark in Central Europe. So if are fan of water slides water slide or other water attraction, this is the right place to go. And when you are there don't forget to check out the sauna world.",
+                "url": "http://www.aquapalace.cz/en",
+                "category": "swimming"
             },
             {
                 "title": "Hybernia",
-                "address": "Hybernska 7/1033, Praha 1, 110 00",
-                "description": "Czech cuisine is said to be heavy and unhealthy. But not in this restaurant where you can get some of delicious czech specialities for reasonable prices. And in addition to that you can also draw beer directly from the table. ",
+                "address": "Hybernska 7/1033, Praha 1",
+                "description": "If you enjoy eating meet try this restaurant because here they really know how to prepare it. You can find there some Czech and other specialities for reasonable prices. Make also sure you are starving enough, because the portion are big. And in addition to that you can also draw beer directly from the table. ",
                 "url": "http://www.hybernia.cz/",
-                "category": "restaurant",
-                "lat" : 50.087502,
-                "lng" : 14.431470
+                "category": "restaurant"
+            },
+            {
+                "title": "U Dzouydyho",
+                "address": "Jugoslavska 670, Praha 2",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "https://www.udzoudyho.cz/",
+                "category": "teahouse"
+            },
+            {
+                "title": "Zanzibar",
+                "address": "Americka 152/15, Praha 2-Vinohrady",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "http://www.kavarnazanzibar.cz/",
+                "category": "coffee"
+            },
+            {
+                "title": "Divoka Sarka",
+                "address": "Divoka Sarka 41, Praha 6, 164 00",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "http://koupaliste-sarka.webnode.cz/",
+                "category": "swimming"
+            },
+            {
+                "title": "Riegrovy sady",
+                "address": "Riegrovy sady, Praha 2",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "http://www.myczechrepublic.com/prague/riegrovy-sady-park.html",
+                "category": "park"
+            },
+            {
+                "title": "Dobra Trafika",
+                "address": "Korunni 42, Praha 2",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "http://www.dobratrafika.cz/",
+                "category": "coffee"
+            },
+            {
+                "title": "Hells Bells Rockin' Pub",
+                "address": "Na Belidle 27, Praha 5-Andel",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "url": "http://rockinpub.hellsbells.cz/",
+                "category": "music_rock"
+            },
+            {
+                "title": "Golf Club Praha",
+                "address": "Plzenska 401/2, Praha 5",
+                "description": "Nice, calm place to play golf with course of nine holes. However, the course is quite hilly. You can also watch the game directly from the terrace of the local, homely restaurant.",
+                "url": "http://www.gcp.cz/index.php?lang=en",
+                "category": "golf"
             }]
 
         }
@@ -160,12 +210,16 @@ $( document ).ready(function () {
 
                 address = place.address;
 
+                // use the google geocoding API to get latitude and longitude from
+                // the address. The free API has request limit (11) in short time 
                 geocoder.geocode( { 'address': address}, function(results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
                         var latitude = results[0].geometry.location.lat();
                         var longitude = results[0].geometry.location.lng();
                         createMarker (latitude, longitude);
-                    } 
+                    } else {
+                        console.log("request not successful")
+                    }
                 }); 
                 // define a function that will create a marker, adjust the map according
                 // to the marker and add the marker to the list in viewModel
