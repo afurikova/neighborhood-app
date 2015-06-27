@@ -179,14 +179,7 @@ $( document ).ready(function () {
             var bounds = new google.maps.LatLngBounds();
 
             // get all the favourite places in currentLocation and
-            // sort them alphabetically
             var places = bindingContext.$data.currentLocation().places;
-            places.sort(function (place1, place2) {
-                return (place1.title > place2.title) ? 1 : -1;
-            });
-
-            var markers = [];
-            // console.log(places)
 
             var infoWindow = new google.maps.InfoWindow({
                 maxWidth: 200
@@ -203,6 +196,9 @@ $( document ).ready(function () {
             
             // add markers of current place and display them
             places.forEach(function (place) {
+                var index = places.indexOf(place);
+                // place.id = index;
+
                 // define markers position and create an object
                 var lat = place.lat;
                 var lng = place.lng;
@@ -226,7 +222,7 @@ $( document ).ready(function () {
                 // the function shall be called after address is convert to
                 // latitude and longitude
                 function createMarker (lat, lng) {
-                    console.log("create marker")
+                    // console.log("create marker")
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         map: map,
@@ -236,6 +232,7 @@ $( document ).ready(function () {
                         content: place.description,
                         link: place.url,
                         category: place.category,
+                        id: index,
                         // image: "https://maps.googleapis.com/maps/api/streetview?size=400x250&location=" + lat + "," + lng + " &fov=90&heading=235&pitch=10",
                         imageUrl: "https://maps.googleapis.com/maps/api/streetview?size=800x400&location=" + place.address,
 
@@ -267,8 +264,7 @@ $( document ).ready(function () {
                             }
 
                             // show the info of the actual selected place
-                            var index = $.inArray(marker, markers)
-                            var selectedArticleContent = $(".article:eq(" + index + ") .content")
+                            var selectedArticleContent = $("#" + index + " .content")
                             selectedArticleContent.toggle();
                             
                             // hide the previously selected article if any
@@ -287,7 +283,6 @@ $( document ).ready(function () {
                     // add the new marker to the list of markers in viewModel
                     // so it can be used to build a sidebar list
                     bindingContext.$data.markers.push(marker)
-                    markers.push(marker);
 
                     // adjust a map according to the added markers
                     bounds.extend(marker.position);
@@ -295,7 +290,6 @@ $( document ).ready(function () {
                 }
             })
         }
-
     }
 
     var AppViewModel = function () {
@@ -304,6 +298,9 @@ $( document ).ready(function () {
         self.map = ko.observable();
         self.currentLocation = ko.observable(new Location(model[0]));
         self.markers = ko.observableArray();
+        self.sortedMarkers = ko.computed(function () {
+            return
+        })
     }
     
     // apply the bindings
