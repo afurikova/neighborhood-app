@@ -22,7 +22,7 @@ body {
 .hidden {
 	display: none;
 }
-.side_bar {
+#side_bar {
 	max-height: 70%;
 	position: absolute;
 	overflow-y: auto;

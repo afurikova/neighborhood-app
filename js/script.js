@@ -177,10 +177,14 @@ $( document ).ready(function () {
             }); //static infoWindow for all the markers, 
             // it makes sure only one ifowindow is open at the moment
             
+            // initialize a variable for the selected article
+            var currentArticle;
             // initialize a variable for the last selected article
             var previousArticle;
             // initialize a variable for the last animated marker
             var previousAnimation;
+            // initialize a variable for selected article element position in the side bar
+            var selectedArticlePos;
 
             var address;
             var geocoder = new google.maps.Geocoder();
@@ -230,6 +234,50 @@ $( document ).ready(function () {
                         // a function opening an info window, use this function to manipulate 
                         // the side-bar and the markers at the same time
                         openInfo: function () {
+                            // find the position of the selected article inside of the side bar
+                            currentArticle = $("#" + index);
+                            // if new article selected
+                            if (previousArticle) {
+                                if ( previousArticle[0] != currentArticle[0]) {
+                                    // hide previous article content
+                                    previousArticle.find(".content").toggle()
+                                    // go to the position of newly selected article
+                                    selectedArticlePos = currentArticle.position().top;
+                                    $('#side_bar').animate({scrollTop:selectedArticlePos});
+                                    // display the hidden content of newly selected article
+                                    var selectedArticleContent = currentArticle.find(".content");
+                                    selectedArticleContent.toggle();        
+
+                                    // close the previous animation and trigger animation of 
+                                    // selected marker
+                                    previousAnimation.setAnimation(null);
+
+                                    // set the selected article as previous one
+                                    previousArticle = currentArticle;
+                                    this.setAnimation(google.maps.Animation.BOUNCE);
+                                    previousAnimation = this;
+                                }
+
+                            } else {
+                                // go to the position of the selected article
+                                selectedArticlePos = currentArticle.position().top;
+                                $('#side_bar').animate({scrollTop:selectedArticlePos});
+                                // display the hidden content of the selected article
+                                var selectedArticleContent = currentArticle.find(".content");
+                                selectedArticleContent.toggle();
+
+                                // trigger animation of the marker and save the animation as
+                                // the previous one
+                                this.setAnimation(google.maps.Animation.BOUNCE);
+                                previousAnimation = this;
+
+                                // set the selected article as previous one
+                                previousArticle = currentArticle;
+                            }
+
+                            // var selectedArticlePos = currentArticle.position().top;
+                            // console.log(selectedArticlePos)
+                            // $('#side_bar').animate({scrollTop:selectedArticlePos}, "slow");
                             // open an info window
                             // infoWindow.setContent("<a href='#'>" + marker.title + "</a>" + "<p>" + marker.content + "</p>")
                             // infoWindow.open(map, this);
@@ -237,33 +285,32 @@ $( document ).ready(function () {
                             // create an animation of the marker, only one or any
                             // marker animation can be active at the moment
 
-                            // activate the animation if not activated and asign the
-                            // the current animation as the previous one
-                            if (this.getAnimation() != null) {
-                                this.setAnimation(null);
-                                previousAnimation = this;
-                            // or if the animation is not activated, check for the previous
-                            // animation, switch it off if needed and activate the current animation,
-                            // finaly asign the new activation to the previous one 
-                            } else {
-                                if ((previousAnimation) && (previousAnimation.getAnimation() != null)) {
-                                    previousAnimation.setAnimation(null);                   
-                                }
+                            // // activate the animation if not activated and asign the
+                            // // the current animation as the previous one
+                            // if (this.getAnimation() != null) {
+                            //     this.setAnimation(null);
+                            //     previousAnimation = this;
+                            // // or if the animation is not activated, check for the previous
+                            // // animation, switch it off if needed and activate the current animation,
+                            // // finaly asign the new activation to the previous one 
+                            // } else {
+                            //     if ((previousAnimation) && (previousAnimation.getAnimation() != null)) {
+                            //         previousAnimation.setAnimation(null);                   
+                            //     }
 
-                                this.setAnimation(google.maps.Animation.BOUNCE);
-                                previousAnimation = this;
-                            }
+                            //     this.setAnimation(google.maps.Animation.BOUNCE);
+                            //     previousAnimation = this;
+                            // }
 
                             // show the info of the actual selected place
-                            var selectedArticleContent = $("#" + index + " .content")
-                            selectedArticleContent.toggle();
+                            
                             
                             // hide the previously selected article if any
-                            if(previousArticle) {
-                                previousArticle.toggle()
-                            };
+                            // if(previousArticle) {
+                            //     previousArticle.find(".content").toggle()
+                            // };
                             // set the selected article as the previous one
-                            previousArticle = selectedArticleContent;
+                            
                         }
                     })
                     // trigger an event when click on a marker

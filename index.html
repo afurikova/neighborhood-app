@@ -15,7 +15,7 @@
 <body>
 	<div id="map-canvas" data-bind="loadMap: currentLocation"></div>
 
-	<nav role="navigation" class="side_bar" data-bind="visible: currentLocation">
+	<nav role="navigation" id="side_bar" data-bind="visible: currentLocation">
 		<div data-bind="loadMarkers: map">
 			<h2>My Favorite locations in <span data-bind="text: currentLocation().city"></span></h2>
 			<ul data-bind="foreach: markers().sort(function(l,r) { return l.title == r.title ? 0 : (l.title < r.title ? -1 : 1)})">
