@@ -25,6 +25,7 @@ body {
 #side_bar {
 	max-height: 70%;
 	position: absolute;
+	border-radius: 20px;
 	overflow-y: auto;
     width: 27%;
     min-width: 250px;
